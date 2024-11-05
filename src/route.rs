@@ -1,8 +1,9 @@
+use crate::costing;
 use serde::{Deserialize, Serialize};
-pub mod costing;
+
 #[derive(Deserialize, Debug, Clone)]
-pub struct Response {
-    pub trip: Trip,
+pub(crate) struct Response {
+    pub(crate) trip: Trip,
 }
 
 #[derive(Deserialize, Debug, Clone)]
@@ -387,7 +388,7 @@ pub struct Manifest {
     directions_type: DirectionsType,
     alternates: i32,
     exclude_locations: Vec<Location>,
-    exclude_polygons: Vec<Vec<Coordinate>>,
+    exclude_polygons: Vec<Vec<super::Coordinate>>,
     linear_references: Option<bool>,
     prioritize_bidirectional: Option<bool>,
     roundabout_exits: Option<bool>,
@@ -511,7 +512,7 @@ impl Manifest {
     /// ```rust,no_run
     /// use valhalla_client::Valhalla;
     /// use valhalla_client::route::{Location, Manifest};
-    /// use valhalla_client::route::costing::{Costing};
+    /// use valhalla_client::costing::{Costing};
     ///
     /// let polygon_around_midrecht_between_amsterdam_and_utrecht = vec![(4.9904022, 52.2528761), (4.8431168, 52.2392163), (4.8468933, 52.1799052), (4.9845657, 52.2102016), (4.9904022, 52.2528761)];
     /// let polygon_around_leiden = vec![(4.5891266, 52.1979985),(4.4105987, 52.2560249),(4.3034820, 52.1592721),(4.5005493, 52.0935286),(4.5726471, 52.1373684),(4.5898132, 52.1984193),(4.5891266, 52.1979985)];
@@ -530,7 +531,7 @@ impl Manifest {
     /// ```
     pub fn exclude_polygons(
         mut self,
-        exclude_polygons: impl IntoIterator<Item = impl IntoIterator<Item = Coordinate>>,
+        exclude_polygons: impl IntoIterator<Item = impl IntoIterator<Item = super::Coordinate>>,
     ) -> Self {
         self.exclude_polygons = exclude_polygons
             .into_iter()
@@ -551,7 +552,7 @@ impl Manifest {
     /// ```rust,no_run
     /// use valhalla_client::Valhalla;
     /// use valhalla_client::route::{Location, Manifest};
-    /// use valhalla_client::route::costing::{Costing};
+    /// use valhalla_client::costing::{Costing};
     ///
     /// let polygon_around_leiden = vec![(4.5891266, 52.1979985),(4.4105987, 52.2560249),(4.3034820, 52.1592721),(4.5005493, 52.0935286),(4.5726471, 52.1373684),(4.5898132, 52.1984193),(4.5891266, 52.1979985)];
     /// let amsterdam = Location::new(4.9041, 52.3676);
@@ -569,7 +570,7 @@ impl Manifest {
     /// ```
     pub fn exclude_polygon(
         mut self,
-        exclude_polygon: impl IntoIterator<Item = Coordinate>,
+        exclude_polygon: impl IntoIterator<Item = super::Coordinate>,
     ) -> Self {
         self.exclude_polygons
             .push(exclude_polygon.into_iter().collect());
@@ -643,12 +644,8 @@ impl From<&Location> for gpx::Waypoint {
         p
     }
 }
-/// A longitude, latitude coordinate in degrees
-///
-/// See <https://en.wikipedia.org/wiki/Geographic_coordinate_system> for further context
-pub type Coordinate = (f32, f32);
-impl From<Coordinate> for Location {
-    fn from((latitude, longitude): Coordinate) -> Self {
+impl From<super::Coordinate> for Location {
+    fn from((latitude, longitude): super::Coordinate) -> Self {
         Self {
             latitude,
             longitude,
