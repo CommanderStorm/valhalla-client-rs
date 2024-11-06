@@ -102,6 +102,7 @@ impl Manifest {
 #[derive(Serialize, Debug)]
 pub struct DateTime {
     r#type: MatrixDateTimeType,
+    #[serde(serialize_with="super::serialize_naive_date_time")]
     value: chrono::NaiveDateTime,
 }
 impl DateTime {
@@ -140,6 +141,7 @@ enum MatrixDateTimeType {
 pub struct Location {
     lat: f32,
     lon: f32,
+    #[serde(serialize_with="super::serialize_naive_date_time_opt")]
     date_time: Option<chrono::NaiveDateTime>,
 }
 impl From<super::Coordinate> for Location {
@@ -196,7 +198,7 @@ pub struct Response {
     /// Present only in `verbose` mode. Verbosity can be set via [`Manifest::verbose_output`]
     pub sources: Option<Vec<Location>>,
     /// The targets of the matrix
-    /// 
+    ///
     /// Present only in `verbose` mode. Verbosity can be set via [`Manifest::verbose_output`]
     pub targets: Option<Vec<Location>>,
     /// Row-ordered time and distances between the sources and the targets.

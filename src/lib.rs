@@ -27,6 +27,19 @@ pub enum Error {
     RemoteError(RemoteError),
 }
 
+/// valhalla needs `date_time` fields to be in the `YYYY-MM-DDTHH:MM` format
+pub(crate) fn serialize_naive_date_time_opt<S>(value:&Option<chrono::NaiveDateTime>,serializer: S)-> Result<S::Ok, S::Error> where S: serde::Serializer{
+    match value { 
+        None=> serializer.serialize_none(),
+        Some(value)=>serialize_naive_date_time(value,serializer)
+    }
+}
+
+/// valhalla needs `date_time` fields to be in the `YYYY-MM-DDTHH:MM` format
+pub(crate) fn serialize_naive_date_time<S>(value:&chrono::NaiveDateTime,serializer: S)-> Result<S::Ok, S::Error> where S: serde::Serializer{
+    serializer.serialize_str(&value.format("%Y-%m-%dT%H:%M").to_string())
+}
+
 #[derive(Serialize, Deserialize, Default, Debug, Clone, Copy)]
 pub enum Units {
     #[default]
