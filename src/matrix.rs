@@ -101,28 +101,28 @@ impl Manifest {
 /// The local date and time at the location
 #[derive(Serialize, Debug)]
 pub struct DateTime {
-    r#type: MatrixDateType,
+    r#type: MatrixDateTimeType,
     value: chrono::NaiveDateTime,
 }
 impl DateTime {
     /// Current departure time
     pub fn from_current_departure_time() -> Self {
         Self {
-            r#type: MatrixDateType::CurrentDepartureTime,
+            r#type: MatrixDateTimeType::CurrentDeparture,
             value: chrono::Local::now().naive_local(),
         }
     }
     /// Specified departure time
     pub fn from_departure_time(depart_after: chrono::NaiveDateTime) -> Self {
         Self {
-            r#type: MatrixDateType::SpecifiedDepartureTime,
+            r#type: MatrixDateTimeType::SpecifiedDeparture,
             value: depart_after,
         }
     }
     /// Specified arrival time
     pub fn from_arrival_time(arrive_by: chrono::NaiveDateTime) -> Self {
         Self {
-            r#type: MatrixDateType::SpecifiedArrivalTime,
+            r#type: MatrixDateTimeType::SpecifiedArrival,
             value: arrive_by,
         }
     }
@@ -130,10 +130,10 @@ impl DateTime {
 
 #[derive(Serialize, Debug, Clone, Copy)]
 #[repr(u8)]
-enum MatrixDateType {
-    CurrentDepartureTime = 0,
-    SpecifiedDepartureTime,
-    SpecifiedArrivalTime,
+enum MatrixDateTimeType {
+    CurrentDeparture = 0,
+    SpecifiedDeparture,
+    SpecifiedArrival,
 }
 
 #[derive(Serialize, Deserialize, Default, Clone, Copy, PartialEq, Debug)]
