@@ -128,7 +128,7 @@ impl DateTime {
     }
 }
 
-#[derive(Serialize, Debug, Clone, Copy)]
+#[derive(serde_repr::Serialize_repr, Debug, Clone, Copy)]
 #[repr(u8)]
 enum MatrixDateTimeType {
     CurrentDeparture = 0,
@@ -192,9 +192,13 @@ pub struct Response {
     /// Algorithm used
     pub algorithm: String,
     /// The sources of the matrix
-    pub sources: Vec<Location>,
+    ///
+    /// Present only in `verbose` mode. Verbosity can be set via [`Manifest::verbose_output`]
+    pub sources: Option<Vec<Location>>,
     /// The targets of the matrix
-    pub targets: Vec<Location>,
+    /// 
+    /// Present only in `verbose` mode. Verbosity can be set via [`Manifest::verbose_output`]
+    pub targets: Option<Vec<Location>>,
     /// Row-ordered time and distances between the sources and the targets.
     ///
     /// The time and distance from the first location to all others forms the first row of the array,
@@ -203,8 +207,6 @@ pub struct Response {
     pub sources_to_targets: SourcesToTargets,
     /// If the date_time was valid for an origin, date_time will return the local time at the destination.
     pub date_time: Option<chrono::NaiveDateTime>,
-    /// The specified array of lat/lngs from the input request.
-    pub locations: Option<Vec<super::Coordinate>>,
     /// Distance units for output.
     ///
     /// Possible unit types are miles via [`Units::Imperial`] and kilometers via [`Units::Metric`].

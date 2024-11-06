@@ -127,8 +127,8 @@ impl Valhalla {
     ///   .matrix(manifest)
     ///   .unwrap();
     /// # assert!(response.warnings.is_empty());
-    /// # assert_eq!(response.sources.len(),1);
-    /// # assert_eq!(response.targets.len(),3);
+    /// # assert_eq!(response.sources.unwrap().len(),1);
+    /// # assert_eq!(response.targets.unwrap().len(),3);
     /// ```
     pub fn matrix(&self, manifest: matrix::Manifest) -> Result<matrix::Response, Error> {
         debug_assert_ne!(
