@@ -107,7 +107,7 @@ impl Manifest {
 #[derive(Serialize, Debug)]
 pub struct DateTime {
     r#type: MatrixDateTimeType,
-    #[serde(serialize_with="super::serialize_naive_date_time")]
+    #[serde(serialize_with = "super::serialize_naive_date_time")]
     value: chrono::NaiveDateTime,
 }
 impl DateTime {
@@ -146,7 +146,7 @@ enum MatrixDateTimeType {
 pub struct Location {
     lat: f32,
     lon: f32,
-    #[serde(serialize_with="super::serialize_naive_date_time_opt")]
+    #[serde(serialize_with = "super::serialize_naive_date_time_opt")]
     #[serde(skip_serializing_if = "Option::is_none")]
     date_time: Option<chrono::NaiveDateTime>,
 }
