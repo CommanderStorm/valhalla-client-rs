@@ -9,10 +9,15 @@ pub struct Manifest {
     pub(crate) sources: Vec<Location>,
     #[serde(flatten)]
     costing: costing::Costing,
+    #[serde(skip_serializing_if = "String::is_empty")]
     id: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
     matrix_locations: Option<u32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     date_time: Option<DateTime>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     verbose: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     shape_format: Option<ShapeFormat>,
 }
 impl Manifest {
@@ -142,6 +147,7 @@ pub struct Location {
     lat: f32,
     lon: f32,
     #[serde(serialize_with="super::serialize_naive_date_time_opt")]
+    #[serde(skip_serializing_if = "Option::is_none")]
     date_time: Option<chrono::NaiveDateTime>,
 }
 impl From<super::Coordinate> for Location {
