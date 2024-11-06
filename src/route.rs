@@ -10,7 +10,7 @@ pub(crate) struct Response {
 pub struct Trip {
     pub status: i32,
     pub status_message: String,
-    pub units: Units,
+    pub units: super::Units,
     pub language: String,
     pub locations: Vec<Location>,
     pub warnings: Option<Vec<String>>,
@@ -367,22 +367,12 @@ pub enum DirectionsType {
     Instructions,
 }
 
-#[derive(Serialize, Deserialize, Default, Debug, Clone, Copy)]
-pub enum Units {
-    #[default]
-    #[serde(rename = "kilometers")]
-    Metric,
-
-    #[serde(rename = "miles")]
-    Imperial,
-}
-
 #[derive(Serialize, Default, Debug)]
 pub struct Manifest {
     #[serde(flatten)]
     costing: costing::Costing,
     locations: Vec<Location>,
-    units: Units,
+    units: super::Units,
     id: String,
     language: String,
     directions_type: DirectionsType,
@@ -434,7 +424,7 @@ impl Manifest {
     /// Possible unit types are miles via [`Units::Imperial`] and kilometers via [`Units::Metric`].
     ///
     /// Default: [`Units::Metric`]
-    pub fn units(mut self, units: Units) -> Self {
+    pub fn units(mut self, units: super::Units) -> Self {
         self.units = units;
         self
     }
