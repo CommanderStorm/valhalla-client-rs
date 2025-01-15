@@ -609,7 +609,7 @@ impl Manifest {
     ///
     /// # Example:
     /// ```rust,no_run
-    /// use valhalla_client::Valhalla;
+    /// use valhalla_client::blocking::Valhalla;
     /// use valhalla_client::route::{Location, Manifest};
     /// use valhalla_client::costing::{Costing};
     ///
@@ -650,7 +650,7 @@ impl Manifest {
     ///
     /// # Example:
     /// ```rust,no_run
-    /// use valhalla_client::Valhalla;
+    /// use valhalla_client::blocking::Valhalla;
     /// use valhalla_client::route::{Location, Manifest};
     /// use valhalla_client::costing::{Costing};
     ///
