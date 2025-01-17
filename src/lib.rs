@@ -371,6 +371,7 @@ impl Valhalla {
     /// # Example:
     ///
     /// ```rust,no_run
+    /// # async fn elevation() {
     /// use valhalla_client::Valhalla;
     /// use valhalla_client::elevation::Manifest;
     ///
@@ -385,7 +386,7 @@ impl Valhalla {
     ///   ])
     ///   .include_range();
     /// let response = Valhalla::default()
-    ///   .elevation(request).unwrap();
+    ///   .elevation(request).await.unwrap();
     /// # assert!(response.height.is_empty());
     /// # assert_eq!(response.range_height.len(), 6);
     /// # assert!(response.encoded_polyline.is_none());
@@ -393,6 +394,7 @@ impl Valhalla {
     /// # assert_eq!(response.x_coordinate, None);
     /// # assert_eq!(response.y_coordinate, None);
     /// # assert_eq!(response.shape.map(|s|s.len()),Some(6));
+    /// # }
     /// ```
     pub async fn elevation(
         &self,
