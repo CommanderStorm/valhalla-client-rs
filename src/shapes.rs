@@ -54,7 +54,7 @@ fn decode_shape_polyline6(encoded: &str) -> Vec<ShapePoint> {
             let mut byte = 0x20;
             // keep decoding bytes until you have this coord
             while byte >= 0x20 {
-                byte = i32::from(b) - 63;
+                byte = i32::from(*b) - 63;
                 ll[j] |= (byte & 0x1f) << shift;
                 shift += 5;
             }
