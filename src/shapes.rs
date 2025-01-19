@@ -45,6 +45,7 @@ fn decode_shape_polyline6(encoded: &str) -> Vec<ShapePoint> {
     let inv = 1.0 / 1e6;
     let mut decoded = Vec::new();
     let mut previous = [0, 0];
+    let mut i = 0;
 
     while i < encoded.len() {
         // for each coord (lat, lon)
@@ -54,17 +55,18 @@ fn decode_shape_polyline6(encoded: &str) -> Vec<ShapePoint> {
             let mut byte = 0x20;
             // keep decoding bytes until you have this coord
             while byte >= 0x20 {
-                byte = i32::from(*b) - 63;
+                byte = i32::from(encoded.as_bytes()[i]) - 63;
+                i += 1;
                 ll[j] |= (byte & 0x1f) << shift;
                 shift += 5;
             }
             // get the final value adding the previous offset and remember it for the next
             ll[j] = previous[j]
                 + if (ll[j] & 1) != 0 {
-                    !(ll[j] >> 1)
-                } else {
-                    ll[j] >> 1
-                };
+                !(ll[j] >> 1)
+            } else {
+                ll[j] >> 1
+            };
             previous[j] = ll[j];
         }
         // scale by the precision
